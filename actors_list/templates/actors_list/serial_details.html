@@ -1,0 +1,22 @@
+<h1>{{ serial.title }}</h1>
+<h1>Overall Rating: {{ avg_score }}
+    {% for comment in comments %}
+    {% endfor %}</h1>
+<h3> Release Date: {{ serial.release_date }} </h3>
+<h3> Seasons: {{serial.number_of_seasons }} </h3>
+<h3> Actors: </h3>
+
+{% for actor in actors %}
+<h5>{{ actor.name }}</h5>
+
+{% endfor %}
+
+<h3>Comments:</h3>
+
+{% for comment in comments %}
+<h3>{{ comment.com }}</h3>
+<h3>Rating: {{ comment.rate }}</h3>
+{% endfor %}
+{% if user.is_authenticated %}
+    <a href="{{ serial.id }}/comment">Add Comment And Rate</a>
+{% endif %}
