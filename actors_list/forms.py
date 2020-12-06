@@ -5,7 +5,7 @@ from .models import Serial, Comment
 class SerialForm(forms.ModelForm):
     class Meta:
         model = Serial
-        fields = '__all__'
+        fields = ['title', 'release_date']
 
 
 class CommentForm(forms.ModelForm):

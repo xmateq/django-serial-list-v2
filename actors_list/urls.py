@@ -8,7 +8,9 @@ urlpatterns = [
     path('show/update/<pk>', views.SerialUpdate.as_view(), name='update_serial'),
     path('show/details/<pk>', views.SerialDetails.as_view(), name='serial_details'),
     path('show/details/<pk>/comment', views.CommentCreate.as_view(), name='comment_create'),
-    path('profile/', views.Profile.as_view(), name='profile')
+    path('profile/', views.Profile.as_view(), name='profile'),
+
+
 
 
 
