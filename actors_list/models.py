@@ -1,12 +1,24 @@
-import datetime
-
+from .utils import call_api
 from django.db import models
 from django.core import validators
+
 
 class Serial(models.Model):
     title = models.CharField(max_length=200)
     number_of_seasons = models.IntegerField(default=0)
-    release_date = models.DateField(default=datetime.date.today)
+    release_date = models.CharField(max_length=4, default=0)
+    api_title = models.CharField(max_length=200, default=0)
+    slug = models.CharField(max_length=200, default=0)
+    imdb = models.CharField(max_length=100, default=0)
+
+    def save(self, *args, **kwargs):
+        title = self.title
+        api_data = call_api(serial_title=title)
+        self.api_title = api_data['apititle']
+        self.slug = api_data['slug']
+        self.imdb = api_data['imdb']
+        self.release_date = api_data['year']
+        return super(Serial, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
