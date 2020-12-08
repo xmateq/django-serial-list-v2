@@ -1,12 +1,11 @@
-from .utils import call_api
+from actors_list.utils import call_api
 from django.db import models
-from django.core import validators
 
 
 class Serial(models.Model):
     title = models.CharField(max_length=200)
     number_of_seasons = models.IntegerField(default=0)
-    release_date = models.CharField(max_length=4, default=0)
+    release_year = models.DateField(max_length=4, auto_now=True)
     api_title = models.CharField(max_length=200, default=0)
     slug = models.CharField(max_length=200, default=0)
     imdb = models.CharField(max_length=100, default=0)
@@ -17,14 +16,14 @@ class Serial(models.Model):
         self.api_title = api_data['apititle']
         self.slug = api_data['slug']
         self.imdb = api_data['imdb']
-        self.release_date = api_data['year']
+        self.release_year = api_data['year']
         return super(Serial, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
 
     class Meta:
-        unique_together = ['title', 'release_date']
+        unique_together = ['title', 'release_year']
 
 
 class Actor(models.Model):
