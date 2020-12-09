@@ -9,7 +9,7 @@
     <tr>
         <td><a href="show/details/{{ serial.id }}">{{ serial.title }}</a> </td>
         <td>{{ serial.number_of_seasons }}</td>
-        <td>{{ serial.release_date }}</td>
+        <td>{{ serial.release_year }}</td>
         <td><a href="show/update/{{ serial.id }}">Update</a></td>
         <td><a href="show/delete/{{ serial.id }}">Delete</a></td>
     </tr>
@@ -20,6 +20,6 @@
     <p><a href="show/create">Add New Serial</a></p>
     <p><a href="/logout">Logout</a> <a href="/profile">Profile</a>Logged as {{ user.username }}</p>
 {% else %}
-    <p><a href="/login">Login</a></p>
+    <p><a href="/login">Login</a> <a href="{% url 'signup' %}">Register</a></p>
 {% endif %}
 

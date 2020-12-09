@@ -1,12 +1,15 @@
-from django.shortcuts import get_object_or_404
+import requests
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 
-from .forms import SerialForm, CommentForm
-from .models import Serial, Actor, Comment
+from actors_list.models import Serial, Actor, Comment
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView, TemplateView
 from django.db.models import Avg
 
+UserModel = get_user_model()
 
 class IndexView(ListView):
     queryset = Serial.objects.all()
@@ -16,24 +19,24 @@ class IndexView(ListView):
 class SerialCreate(LoginRequiredMixin, CreateView):
     model = Serial
     template_name = 'actors_list/create_serial.html'
-    form_class = SerialForm
+    fields = ('title', 'number_of_seasons',)
     success_url = reverse_lazy('shows_list')
-    login_url = '/login/'
+    login_url = reverse_lazy('login')
 
 
 class SerialDelete(LoginRequiredMixin, DeleteView):
     model = Serial
     template_name = 'actors_list/delete_serial.html'
     success_url = reverse_lazy('shows_list')
-    login_url = '/login/'
+    login_url = reverse_lazy('login')
 
 
 class SerialUpdate(LoginRequiredMixin, UpdateView):
     model = Serial
     template_name = 'actors_list/update_serial.html'
     success_url = reverse_lazy('shows_list')
-    form_class = SerialForm
-    login_url = '/login/'
+    fields = ('title', 'number_of_seasons',)
+    login_url = reverse_lazy('login')
 
 
 class SerialDetails(DetailView):
@@ -52,8 +55,8 @@ class CommentCreate(LoginRequiredMixin, CreateView):
     model = Comment
     template_name = 'actors_list/create_comment.html'
     success_url = reverse_lazy('shows_list')
-    form_class = CommentForm
-    login_url = '/login/'
+    fields = ('com', 'rate',)
+    login_url = reverse_lazy('login')
 
     def form_valid(self, form):
         get_object_or_404(Serial, pk=self.kwargs.get('pk'))
@@ -63,6 +66,11 @@ class CommentCreate(LoginRequiredMixin, CreateView):
 
 class Profile(LoginRequiredMixin, TemplateView):
     template_name = 'actors_list/profile.html'
-    login_url = '/login/'
+    login_url = reverse_lazy('login')
 
 
+class SignUpView(CreateView):
+    model = UserModel
+    form_class = UserCreationForm
+    success_url = reverse_lazy('login')
+    template_name = 'registration/signup.html'
