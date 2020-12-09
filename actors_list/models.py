@@ -1,11 +1,12 @@
 from actors_list.utils import call_api
 from django.db import models
-
+import datetime
+from django.core.validators import MinValueValidator
 
 class Serial(models.Model):
     title = models.CharField(max_length=200)
     number_of_seasons = models.IntegerField(default=0)
-    release_year = models.CharField(max_length=4, default=0)
+    release_year = models.PositiveSmallIntegerField(validators=[MinValueValidator(1800)])
     api_title = models.CharField(max_length=200, default=0)
     slug = models.CharField(max_length=200, default=0)
     imdb = models.CharField(max_length=100, default=0)
